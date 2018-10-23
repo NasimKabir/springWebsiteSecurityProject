@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<security:authentication-manager>
+		
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+				id="revemberme" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<security:http use-expressions="true">
+		<security:form-login
+			authentication-failure-url="/login?error=true" login-page="/login" />
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/log_out" access="permitAll" />
+		<security:intercept-url pattern="/from" access="isAuthenticated()" />
+		<security:intercept-url pattern="/offercreate" access="permitAll" />
+		<security:intercept-url pattern="/created" access="permitAll" />
+		<security:intercept-url pattern="/offercreated" access="permitAll" />
+		<security:intercept-url pattern="/list" access="permitAll" />
+		<security:intercept-url pattern="/offerList" access="permitAll" />
+		<security:intercept-url pattern="/createaccount" access="isAuthenticated()" />
+		<security:intercept-url pattern="/createAccount" access="permitAll" />
+		<security:intercept-url pattern="/newAccount" access="permitAll" />
+	    <security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/static/**" access="permitAll" />
+		<security:intercept-url pattern="/**" access="denyAll" />
+		<security:csrf disabled="true" />
+		<security:logout logout-success-url="/log_out"
+			invalidate-session="true" />
+		<security:remember-me key="AppKey" user-service-ref="revemberme"
+			remember-me-parameter="_spring_security_remember_me" />
+	</security:http>
+
+</beans>
